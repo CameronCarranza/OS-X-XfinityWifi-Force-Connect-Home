@@ -1,10 +1,13 @@
 #!/bin/sh
 
+currDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 # Config Options
-home_SSID="pfsense-ap-5g-1"
+home_SSID="yourSSID"
 home_SSID_passwordfile="$HOME/.xfinitywifi-pwd" # Generated if it does not exist.
-connect_VPN=true
-tunnelblick_applescript_connect_script="$HOME/Code/Scripts/xfinityNeighbors.scpt"
+home_signal_strength_threshold="-60"
+connect_VPN=false
+tunnelblick_applescript_connect_script="$currDir/xfinityNeighbors.scpt"
 # /Config Options
 
 if [ ! -z $PS1 ] && [ ! -f home_SSID_passwordfile ]; then
@@ -30,9 +33,9 @@ fi
 connection_string=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s | grep $home_SSID)
 home_connectivity=$(echo $connection_string | awk '{print $3}')
 
-if [ $home_connectivity -ge -60 ]; then
+if [ $home_connectivity -ge $home_signal_strength_threshold ]; then
     # Home network is close enough to connect, so connect to it.
-    networksetup -setairportnetwork en0 pfsense-ap-5g-1 $(cat $home_SSID_passwordfile)
+    networksetup -setairportnetwork en0 $home_SSID $(cat $home_SSID_passwordfile)
 else
     # Not close enough, launch VPN if desired
     if [ $connect_VPN ]; then
