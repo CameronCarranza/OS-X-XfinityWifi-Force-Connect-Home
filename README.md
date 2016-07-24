@@ -8,14 +8,16 @@ This script checks if your home network is nearby and within a certain threshold
 
 ### How does it work?
 This shell script and apple script are designed to 
-be executed by [ControlPlane](http://www.controlplaneapp.com/) when the SSID is equal to "xfinitywifi".
+be executed by [ControlPlane](http://www.controlplaneapp.com/) when the SSID is equal to "xfinitywifi". If your home 
+network is found you are connected to it via `networksetup`.
+The applescript file is executed by the shellscript if a VPN connection is desired upon failure to connect to the home network.
 
 ## Requirements
 
 * [ControlPlane](http://www.controlplaneapp.com/)
 * OS X
 * A nearby xfinitywifi network.
-* (Optional - if you want to launch a VPN whenever connected to XfinityWifi) [TunnelBlick](https://tunnelblick.net/)
+* (Optional - if you want to launch a VPN when connected to XfinityWifi) [TunnelBlick](https://tunnelblick.net/)
 
 ## Script Setup
 
@@ -26,10 +28,9 @@ be executed by [ControlPlane](http://www.controlplaneapp.com/) when the SSID is 
         * `home_SSID_passwordfile`: Dotfile that your network password is stored in (run this script once from the terminal to generate the file from your input).
         * `home_signal_strength_threshold`: maximum RSSI allowed to connect to Home Network. Set this higher if you are not getting autoconnected.
         * `connect_VPN`: Do you want to connect to a TunnelBlick VPN if your home network is not found / cannot be connected to?
-        * `tunnelblick_applescript_connect_script`: Applescript Path for TunnelBlick connection script if connect_VPN is true.
-
-        
-        , such as the `home_SSID` and whether or not you want to connect to a VPN if your home network is not found. You can also adjust the threshold here and pick the file path for your VPN script if you place it in a separate directory.
+        * `tunnelblick_applescript_connect_script`: Path to script if you place it separate from the shell script (otherwise leave this as default).
+3. (Optional - TunnelBlick VPN Desired only) `xfinityNeighbors.scpt`
+    * Replace all instances of `yourVPNConnectionName` with your VPN name from the TunnelBlick dropdown / Menu.
 
 ## ControlPlane Setup
 
